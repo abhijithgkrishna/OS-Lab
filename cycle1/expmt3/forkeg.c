@@ -5,9 +5,6 @@
 
 int main()
 {
-	// fork();
-	// printf("Hello world\n");
-	// printf("new fork\n");
 	pid_t id = getpid();
 	printf("%d \n",id );
 	int k = fork();
@@ -16,6 +13,7 @@ int main()
 		printf("Child process\n");
 		printf("child 2\n");
 		pid_t id3 = getpid();
+		
 		printf("%d \n",id3 );
 		exit(0);
 	}
