@@ -1,0 +1,385 @@
+\documentclass{article}
+\usepackage{float}
+%\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+%\usepackage[T1]{fontenc}
+\fancypagestyle{first}{
+  \lhead{Experiment 3
+  
+  Date 06-03-2023}
+  \rhead{}}
+  \fancypagestyle{third}{
+  \lhead{}
+  \rhead{SYSTEM CALLS}}
+\setcounter{page}{35}
+% Report TITLE
+\title{\textbf {SYSTEM CALLS}}
+\date{\vspace{-5ex}}
+\begin{document}
+\maketitle
+\thispagestyle{first}
+\pagestyle{third}
+%\pagestyle{first}
+\section*{\Large Aim}
+To familiarize the System calls such as fork, exec, getpid, exit, wait,
+close, stat, opendir, readdir
+\section{\Large fork}
+\subsection{Aim}
+\begin{Verbatim}[tabsize = 4]
+To familiarize the system call fork
+\end{Verbatim}
+\subsection{Description}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Use fork to create a child process
+3. Print 'hello world"
+4. Stop
+\end{Verbatim}
+
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+int main()
+{
+	fork();
+	printf("Hello world!\n");
+	return 0;
+}
+
+\end{Verbatim}
+
+\subsection{Sample Input and Output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{1.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large exec}
+\subsection{Aim}
+To familiarize with the system call exec
+\subsection{Description}
+\begin{Verbatim}[tabsize = 4]
+System call is used to replace the process’s memory space with a new program.
+The exec system call is used to execute a file which is residing in an active process.
+\end{Verbatim}
+%\rhead{2. REVERSING ARGUMENTS}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+int main()
+{
+	char *args[]={"./execdemo",NULL};
+	execvp(args[0],args);
+	printf("End\n");
+}
+
+\end{Verbatim}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{2.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large getpid()}
+\subsection{Aim}
+\begin{Verbatim}[tabsize = 4]
+To familiarize with the system call getpid()
+\end{Verbatim}
+\newpage
+\subsection{Algorithm}
+%\rhead{3. GROSS SALARY CALCULATION}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Get pid=fork()
+3. If pid==0, then
+    print process id: getpid()
+4. Stop
+\end{Verbatim}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+#include <stdio.h>
+#include <unistd.h>
+int main()
+{
+	int pid;
+	pid = fork();
+	if (pid == 0)
+	{
+		printf("Process id : %d \n",getpid());
+	}
+	return 0;
+}
+
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample Input and Output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{3.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large exit() }
+\subsection{Aim}
+To familiarize with the system call exit()
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Fork the process and print start
+3. Use exit(0) to exit from the child process and print exiting
+4. print end
+5. return(0)
+6. Stop
+\end{Verbatim}
+%\rhead{4. SMALLEST OF 3 NOS}
+\thispagestyle{third}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+#include <stdio.h>
+#include <stdlib.h>
+#include<unistd.h>
+#include <sys/types.h>
+
+int main () {
+   printf("Start of the program....\n");
+   fork();
+   
+   printf("Exiting the program....\n");
+   exit(0);
+
+   printf("End of the program....\n");
+
+   return(0);
+}
+
+\end{Verbatim}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{4.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large wait}
+\subsection{Aim}
+To familiarize with the system call wait()
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. pid=fork()
+3. if pid<0 
+        print fork failed and exit
+    else if pid ==0
+        execute child process
+    else
+        use wait() for parent process to wait for child to terminate
+        execute parent process
+4. Stop
+
+\end{Verbatim}
+%\rhead{5. REVERSING NUMBER}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+#include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+#include<sys/wait.h>
+int main()
+{
+    int pid=fork(); //creating child
+    if(pid<0)
+    {
+        printf("fork failed!\n");
+    }
+    else if(pid==0)
+    {
+        printf("\nchild process %d executing\n",getpid());
+        printf("calling program prg.c from child using exec\n");
+        char* argv[]={"prg",NULL};
+        execv("./prg",argv);
+    }
+    else
+    {
+        printf("parent process %d executing\n",getpid());
+        int status;
+        printf("parent waiting for child to terminate\n");
+        int pid=wait(&status);
+        printf("child process %d exited-parent wait over\n",pid);
+        printf("parent process %d exits\n",getpid());
+    }
+}
+
+
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{5.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+
+\section{\Large close()}
+\subsection{Aim}
+To familiarize with the system call close()
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Open file testfile.txt using filedesc descriptor
+3. if filedesc<0
+        print outside close
+        return 1
+    else if close(filedesc)<0
+        print inside close and return 0
+4. Stop
+\end{Verbatim}
+%\rhead{6. ARMSTRONG NUMBERS}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+#include <stdlib.h>
+#include <fcntl.h>
+#include<unistd.h>
+#include<stdio.h>
+ 
+int main()
+{
+    size_t filedesc = open("testfile.txt", O_WRONLY | O_CREAT);
+    if(filedesc < 0)
+    {
+    	printf("Outside close\n");
+        return 1;
+    }
+ 
+    if(close(filedesc) < 0)
+    {
+    	printf("Inside close\n");
+        return 1;
+    }
+    else
+    {
+    	printf("File present\n");
+    }
+ 
+    return 0;
+}
+
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{6.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Stat}
+\subsection{Aim}
+To familiarize with the system call stat()
+%\rhead{7. NUMBER PATTERN}
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Use stat() to access various information about a file
+3. Stop
+\end{Verbatim}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <time.h>
+
+int main() {
+  struct stat info;
+
+  if (stat("/", &info) != 0)
+    perror("stat() error");
+  else {
+    puts("stat() returned the following information about root f/s:");
+    printf("  inode:   %d\n",   (int) info.st_ino);
+    printf(" dev id:   %d\n",   (int) info.st_dev);
+    printf("   mode:   %08x\n",       info.st_mode);
+    printf("  links:   %ld\n",         info.st_nlink);
+    printf("    uid:   %d\n",   (int) info.st_uid);
+    printf("    gid:   %d\n",   (int) info.st_gid);
+  }
+  return 0;
+}
+\end{Verbatim}
+\subsection{Sample input and output}
+\thispagestyle{third}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{7.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large opendir() and closedir() }
+\subsection{Aim}
+To familiarize with the system call opendir() and closedir()
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. fl=opendir(dirname) to get directory stream pointer
+3. e=readdir(fl) to get pointer to the directory structure and print 
+various details in the directory
+4. close(fl) to close the directory stream
+5. Stop
+\end{Verbatim}
+%\rhead{8. PASSWORD VALIDATION}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+#include <stdio.h>
+#include <dirent.h>
+
+int main()
+{
+    DIR *folder;
+    struct dirent *entry;
+    int files = 0;
+
+    folder = opendir("samp");
+    if(folder == NULL)
+    {
+        perror("Unable to read directory");
+        return(1);
+    }
+
+    while( (entry=readdir(folder)) )
+    {
+        files++;
+        printf("File %3d: %s\n",
+                files,
+                entry->d_name
+              );
+    }
+
+    closedir(folder);
+
+    return(0);
+}
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{8.png}
+    \includegraphics[width = 10cm ]{8.1.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+
+\section*{\Large Result}
+    Basic shell programs were written and executed successfully.
+
+\end{document}

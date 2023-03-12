@@ -1,0 +1,702 @@
+\documentclass{article}
+\usepackage{float}
+%\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+%\usepackage[T1]{fontenc}
+\fancypagestyle{first}{
+  \lhead{Experiment 2
+  
+  Date 02-03-2023}
+  \rhead{}}
+  \fancypagestyle{third}{
+  \lhead{Sample Input and Output}}
+\setcounter{page}{35}
+% Report TITLE
+\title{\textbf {SHELL PROGRAMMING}}
+\date{\vspace{-5ex}}
+\begin{document}
+\maketitle
+\thispagestyle{first}
+%\pagestyle{first}
+\section*{\Large Aim}
+To write and execute basic shell programs.
+\section{\Large Files to uppercase}
+\subsection{Aim}
+\begin{Verbatim}[tabsize = 4]
+Accept one or more file name as arguments and convert the file contents to
+uppercase, provided they exist in the current directory.
+\end{Verbatim}
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Read file name from command line
+3. For each file convert the contents to uppercase.
+4. Stop
+\end{Verbatim}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+for name in $@
+do
+echo "file name:"$name
+tr [:lower:] [:upper:] < $name
+echo " "
+done
+\end{Verbatim}
+\pagestyle{third}
+\subsection{Sample Input and Output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{1.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Reversing Arguments}
+\subsection{Aim}
+Accept any number of arguments and prints them in the reverse order.
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Read the arguments and store in an array
+3. Print the array in reverse order.
+4. Stop
+\end{Verbatim}
+\rhead{2. REVERSING ARGUMENTS}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+a=("$@")
+n=$#
+for(( i=$n-1; i>=0; i-- ))
+do
+echo "${a[$i]}"
+done
+\end{Verbatim}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{2.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Gross Salary Calculation}
+\subsection{Aim}
+\begin{Verbatim}[tabsize = 4]
+Compute the gross salary of an employee according to the following rules
+(i) if basic salary is less than 1500 then HRA =10% of the basic and DA =90% of the 
+basic. 
+(ii) If basic salary is greater than or equal to 1500 then HRA =Rs.500 and DA=98% 
+of the basic
+\end{Verbatim}
+\newpage
+\subsection{Algorithm}
+\rhead{3. GROSS SALARY CALCULATION}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Read basicSalary
+3. If basicSalary < 1500, then HRA = (.1) * basicSalary and DA = (.9) * basicSalary
+4. Else HRA = 500 and DA = (98/100) * basicSalary
+5. Print HRA and DA
+6. Stop
+\end{Verbatim}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+read -p "Basic pay:" basic
+if [ $basic -lt 1500 ]
+then
+  hra=$(echo "$basic * 0.1" | bc)
+  da=$(echo "$basic * 0.9" | bc)
+else
+  hra=500
+  da=$(echo "$basic * 0.98" | bc)
+fi
+gross=$(echo "$basic + $hra + $da" | bc)
+echo "Gross Salary: Rs. $gross"
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample Input and Output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{3.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Smallest of three numbers}
+\subsection{Aim}
+Find smallest of 3 numbers that are read from keyboard.
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Read a, b, c
+3. If a < b and a < c, then print a
+4. Else if b < a and b < c, then print b
+5. Else print c
+6. Stop
+\end{Verbatim}
+\rhead{4. SMALLEST OF 3 NOS}
+\thispagestyle{third}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+read -p "Enter 1st number " num1
+read -p "Enter 2nd number " num2
+read -p "Enter 3rd number " num3
+if [ $num1 -lt $num2 ] && [ $num1 -lt $num3 ]
+then
+  smallest=$num1
+elif [ $num2 -lt $num1 ] && [ $num2 -lt $num3 ]
+then
+  smallest=$num2
+else
+  smallest=$num3
+fi
+echo "The smallest number is: $smallest"
+
+\end{Verbatim}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{4.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Reversing number}
+\subsection{Aim}
+Print a number in reverse order.
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Enter the number n
+3. while n>0,do step 4 and 5
+4. r = r*10+ n%10
+5. n = n/10
+6. print r
+7. Stop
+\end{Verbatim}
+\rhead{5. REVERSING NUMBER}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+read -p "Enter number" n
+r=0
+while [ $n -gt 0 ] ; do
+r=$((r*10+n%10))
+n=$((n/10))
+done
+echo $r
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{5.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+
+\section{\Large Armstrong Numbers}
+\subsection{Aim}
+Print all armstrong numbers between two numbers.
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Input n1 and n2
+3. i = n1
+4. While i <= n2, repeat steps 5 to 12
+5. a = i
+6. s = 0
+7. l=length(i)
+8. While a > 0, repeat steps 8 to 10
+9. k = a % 10
+10. s = s + k^l
+11. a = a / 10
+12. If s = i, print i
+13. Increment i
+14. Stop
+\end{Verbatim}
+\rhead{6. ARMSTRONG NUMBERS}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+read -p "Enter number 1 :" n1
+read -p "Enter number 2 :" n2
+for (( i=$n1 ; i<=$n2 ; i++ ))
+do
+    s=0
+    a=$i
+    l=${#a}
+    while [ $a -gt 0 ] 
+    do
+        k=$((a%10))
+        s=$((k**l+s))
+        a=$((a/10))
+    done
+    if [ $s -eq $i ]
+    then
+    echo $i
+    fi
+done
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{6.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Number Pattern}
+\subsection{Aim}
+Print the following pattern upto n rows, for a given n.\\
+1\\
+2 2\\
+3 3 3\\
+4 4 4 4\\
+.\\
+.\\
+n n n n n ..\\
+\rhead{7. NUMBER PATTERN}
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Read n
+3. i = 1
+4. While i <= n, repeat steps 5 to 10
+5. j = 0
+6. While j <i, repeat steps 7 and 8
+7. Print i
+8. Increment j
+9. Print newline
+10. Increment i
+11. Stop
+\end{Verbatim}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+read -p "Enter n" n
+for (( i=1;i<=n;i++ ))
+do
+    for(( j=0;j<i;j++ ))
+    do
+        echo -n $i
+    done
+    echo ""
+done
+\end{Verbatim}
+\subsection{Sample input and output}
+\thispagestyle{third}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{7.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Password Validation}
+\subsection{Aim}
+Validate password strength. Here are a few assumptions for the password string.Length should
+be minimum of 8 characters.Should contain both small and capital case letters, atleast a digit
+and an underscore.If the password doesn’t comply with any of the above conditions, then the
+script should report it as a Weak Password.
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Read password
+3. If length of password is greater than 8 and password contains atleast 1
+uppercase,lowercase,digit and underscore then print "Strong password"
+4. Else print "Weak password"
+5. Stop
+\end{Verbatim}
+\rhead{8. PASSWORD VALIDATION}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+read -p "Enter your password: " password
+if [ ${#password} -ge 8 ] && [[ $password =~ [a-z] ]] &&
+[[ $password =~ [A-Z] ]] && [[ $password =~ [0-9] ]] && [[ $password =~ [_] ]];
+then
+    echo "Strong Password"
+else
+    echo "Weak Password"
+fi
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{8.png}
+    \includegraphics[width = 10cm ]{8.1.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Binary and Hexadecimal}
+\rhead{9. BINARY AND HEXADECIMAL}
+\subsection{Aim}
+Print the binary and hexadecimal equivalent of a decimal number.
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Read Decimal number
+3. Initialize b=d,i=o,a[]
+4. while(d>0) do steps 5 to 7
+5. a[i]=d%2
+6. d=d/2
+7. i=i+1
+8. print a from index i-1 to 0
+9. set i=0d=b,a[]
+10. while(d>0) do steps 5 to 7
+11. r=d%16
+12. if (r<10) then a[i]=r
+13. else 
+    13.1 if r=10 a[i]="A"
+    13.2 if r=11 a[i]="B"
+    13.3 if r=12 a[i]="C"
+    13.4 if r=13 a[i]="D"
+    13.5 if r=14 a[i]="E"
+    13.6 if r=15 a[i]="F"
+14. d=d/16
+15. i=i+1
+16. print a from index i-1 to 0
+17. Stop
+\end{Verbatim}
+%\rhead{8. PASSWORD VALIDATION}
+\lhead{Program}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+read -p "Enter decimal number" d
+a=()
+b=$d
+i=0
+while [ $d -gt 0 ]
+do
+    a[i]=$((d%2))
+    d=$((d/2))
+    i=$((i+1))
+done
+echo -n "Binary of $b is "
+for (( j= $i-1;j>=0;j-- ))
+do
+    echo -n "${a[$j]}"
+done
+echo ""
+a=()
+i=0
+d=$b
+while [ $d -gt 0 ]
+do
+    r=$((d%16))
+    if [ $r -lt 10 ]
+    then
+        a[i]=$r
+    else
+        case $r in
+            10) a[i]="A";;
+            11) a[i]="B";;
+            12) a[i]="C";;
+            13) a[i]="D";;
+            14) a[i]="E";;
+            15) a[i]="F";;
+        esac
+    fi
+    d=$((d/16))
+    i=$((i+1))
+done
+echo -n "Hexadecimal of $b is "
+for (( j= $i-1;j>=0;j-- ))
+do
+    echo -n "${a[$j]}"
+done
+echo ""
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{9.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large 3 digit numbers from 0,1,2,3}
+\subsection{Aim}
+Generate all 3 digit numbers that contain only the digits 0, 1, 2, 3.(number does not start with 0)
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. for i=1 to i=3 do steps 3 and 4
+3. for j=0 to j=3 do step 4 
+4. for k=0 to k=3 print (ijk)
+5. Stop
+\end{Verbatim}
+\rhead{10. 3 DIGIT NUMBERS}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+for (( i=1; i<=3; i++ ))
+do
+    for (( j=0; j<=3; j++ ))
+    do
+        for(( k=0; k<=3; k++ ))
+        do
+            echo $i$j$k
+            c=$((c+1))
+        done
+    done
+done
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Summarize directory}
+\rhead{11. SUMMARIZE DIRECTORY}
+\subsection{Aim}
+Create the command ‘summarize directory’ which takes a directory as input and summarizes
+the contents in the directory. This command has to print the a. Total Number of Files in the
+directory b. List of all extensions of files present c. Count of files having each extension in new
+lines The command works recursively for all the subdirectories.
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Read path from terminal
+3. if directory donot exit print directory not found and stop
+4. if number of arguments is 0,then print Usage:Summarize_directory and stop
+5. Find the number of files and print it.
+6. Iterate through all files and store its extensions and print it.
+7. Extract unique extensions and find count of each and print  it.
+8. for all subdirectories repeat steps 5 to 7.
+9.Stop
+\end{Verbatim}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+summarize_dir() {
+    dir="$1"
+    file_ext=""
+    count=0
+    num_files=$(find "$dir" -type f | wc -l)
+    echo "Total Number of Files in the Directory: $num_files"
+    for file in $(find "$dir" -type f); do
+        file_ext=$(echo "${file##*.}")
+        echo "$file_ext"
+    done | sort -u > extensions.txt
+    while read ext; do
+        count=$(find "$dir" -type f -name "*.$ext" | wc -l)
+        echo "$ext: $count"
+    done < extensions.txt
+    rm extensions.txt
+}
+if [ -z "$1" ]; then
+    echo "Usage: summarize_directory [directory]"
+    exit 1
+fi
+if [ ! -d "$1" ]; then
+    echo "Error: Directory does not exist."
+    exit 1
+fi
+for subdir in $(find "$1" -type d); do
+    summarize_dir "$subdir"
+done
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{11.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Pass/Fail}
+\rhead{12. PASS/FAIL}
+\subsection{Aim}
+Given a file containing the marks obtained by students for 3 subjects in an exam. In order to
+pass, student should score at least 50 marks in every subject. The file has one record(line) for
+each student in the following format: rollnumber subject1 subject2 subject3 Write a script to
+print pass/ fail status of each student in the following format: rollnumber pass/fail.
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Read File name
+3. For each line in the file do step steps 4 and 5
+4. if all 3 marks are greater than or equal to 50 ,set status="Pass" else set status ="fail".
+5. print(rollno ,status)
+6. Stop
+\end{Verbatim}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+read -p "Enter the file name: " file
+while read line 
+do
+    echo "$line"
+    fields=($line)
+    roll=${fields[0]}
+    sub1=${fields[1]}
+    sub2=${fields[2]}
+    sub3=${fields[3]}
+    if (( sub1 >= 50 && sub2 >= 50 && sub3 >= 50 ))
+    then
+        status="pass"
+    else
+        status="fail"
+    fi
+    echo "$roll $status"
+done < $file
+
+\end{Verbatim}
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{13.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Palindromic Prime}
+\rhead{13. PALINDROMIC PRIME}
+\subsection{Aim}
+Find the smallest prime number greater than n which is palindromic.
+\subsection{Algorithm}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Read n
+3. Initialize f=0
+4. while(f==0) do steps
+5. n=n+1
+6. for i=2 to squareroot(n)
+    6.1 if n%i =0 set f=1 and break
+7. if f=0 then
+    7.1 set r=0,num=n
+    7.2 while(num >0) do
+            r=r*10+num%10
+            num=num/10
+    7.3 if r=n then
+            set f=1
+            print n
+    7.4 else
+            set f=0
+8. else set f=0
+9. Stop
+\end{Verbatim}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+read -p "Enter n" n
+f=0
+while [ $f -eq 0 ]
+do
+    n=$((n+1))
+    for (( i=2; i*i<=n; i++ ))
+    do 
+        if [ $((n%i)) -eq 0 ]
+        then
+            f=1
+            break
+        fi
+    done
+    if [ $f -eq 0 ]
+    then
+        r=0
+        num=$n
+        while [ $num -gt 0 ] 
+        do
+        r=$((r*10+num%10))
+        num=$((num/10))
+        done
+        if [ $r -eq $n ]
+        then
+            f=1
+            echo "The next palindromic prime number is $n"
+        else
+            f=0
+        fi
+    else
+        f=0
+    fi
+done
+
+\end{Verbatim}
+
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{pal.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+\section{\Large Pattern}
+\subsection{Aim}
+\begin{Verbatim}[tabsize = 4]
+Shell program to print the following pattern upto n rows, for a given n.
+    *
+  * * *
+* * * * *
+  * * *
+    *
+\end{Verbatim}
+\subsection{Algorithm}
+\rhead{14. PATTERN}
+\begin{Verbatim}[tabsize = 4]
+1. Start
+2. Read n
+3. if n is even set r=n/2 else set r=n/2+1
+4. Initialize c=0
+5. for i=1 to n do steps 6 to 12
+6. Set j=1
+7. while(j<=r-c-1) do
+    7.1 print " "
+    7.2 j=j+1
+8. while(j<=r+c) do
+    7.1 print "*"
+    7.2 j=j+1
+9. if (i<r) then Increment c
+10. if (i=r and ni odd) then Decrement c
+11. Else Decrement c
+12. Print newline
+13. Stop
+\end{Verbatim}
+\subsection{Program}
+\begin{Verbatim}[tabsize = 4]
+read -p "Enter n" n
+f=0
+while [ $f -eq 0 ]
+do
+    n=$((n+1))
+    for (( i=2; i*i<=n; i++ ))
+    do 
+        if [ $((n%i)) -eq 0 ]
+        then
+            f=1
+            break
+        fi
+    done
+    if [ $f -eq 0 ]
+    then
+        r=0
+        num=$n
+        while [ $num -gt 0 ] 
+        do
+        r=$((r*10+num%10))
+        num=$((num/10))
+        done
+        if [ $r -eq $n ]
+        then
+            f=1
+            echo "The next palindromic prime number is $n"
+        else
+            f=0
+        fi
+    else
+        f=0
+    fi
+done
+
+\end{Verbatim}
+\newpage
+\thispagestyle{third}
+\subsection{Sample input and output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm ]{14.png}
+    \caption{Output}
+    \label{fig:my_label2}
+\end{figure}
+
+\section{\Large Result}
+    Basic shell programs were written and executed successfully.
+
+\end{document}
