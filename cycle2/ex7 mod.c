@@ -23,7 +23,7 @@ int rear = -1;
 
 void enqueue(struct process item)
 {
-	if (rear == MAX-1)
+	if (rear == MAX - 1)
 	{
 		printf("Queue full, cannot add item \n");
 	}
@@ -43,22 +43,21 @@ struct process dequeue()
 	if (fron == -1)
 	{
 		printf("Queue Empty\n");
-		
+
 		return pr;
 	}
 	else
 	{
 		pr = RQ[fron++];
-		if (fron == rear+1)
+		if (fron == rear + 1)
 		{
 			fron = -1;
-			rear = -1; 
+			rear = -1;
 		}
 	}
 	return pr;
 }
 /*-------------------------------------------------------------------*/
-
 
 int tot_burst()
 {
@@ -71,15 +70,32 @@ int tot_burst()
 void sortarrival()
 {
 	struct process temp;
-	for (int i = 0; i < np-1; ++i)
+	for (int i = 0; i < np - 1; ++i)
 	{
-		for (int j = 0; j < np-i-1; ++j)
+		for (int j = 0; j < np - i - 1; ++j)
 		{
-			if (p[j].arrival>p[j+1].arrival)
+			if (p[j].arrival > p[j + 1].arrival)
 			{
 				temp = p[j];
-				p[j] = p[j+1];
-				p[j+1] = temp;
+				p[j] = p[j + 1];
+				p[j + 1] = temp;
+			}
+		}
+	}
+}
+
+void sortburst()
+{
+	struct process temp;
+	for (int i = 0; i < np - 1; ++i)
+	{
+		for (int j = 0; j < np - i - 1; ++j)
+		{
+			if (p[j].burst > p[j + 1].burst)
+			{
+				temp = p[j];
+				p[j] = p[j + 1];
+				p[j + 1] = temp;
 			}
 		}
 	}
@@ -90,36 +106,35 @@ void sortarrival()
 void getInput()
 {
 	printf("Enter time quantum : ");
-	scanf("%d",&q);
+	scanf("%d", &q);
 
 	for (int i = 0; i < np; ++i)
 	{
-		printf("Enter pid, arrival, burst for process %d : ",i+1);
-		scanf(" %s %d %d",p[i].pid, &p[i].arrival, &p[i].burst);
+		printf("Enter pid, arrival, burst for process %d : ", i + 1);
+		scanf(" %s %d %d", p[i].pid, &p[i].arrival, &p[i].burst);
 		p[i].turnaround = 0;
 		p[i].waiting = 0;
 		p[i].remaining = p[i].burst;
 		p[i].flag = 0;
 	}
-
 }
 
 void printtable()
 {
 	printf("\n\nProcess Table:\n");
-    printf("+-----+---------------+-------------+---------------+-----------------+\n");
-    printf("| PID | Arrival Time  | Burst Time  | Waiting Time  | Turnaround Time |\n");
-    printf("+-----+---------------+-------------+---------------+-----------------+\n");
-    for (int i = 0; i < np; i++)
-    {
-        printf("| %3s | %13d | %11d | %13d | %15d |\n", p[i].pid, p[i].arrival, p[i].burst, p[i].waiting, p[i].turnaround);
-    }
-    printf("+-----+---------------+-------------+---------------+-----------------+\n");
+	printf("+-----+---------------+-------------+---------------+-----------------+\n");
+	printf("| PID | Arrival Time  | Burst Time  | Waiting Time  | Turnaround Time |\n");
+	printf("+-----+---------------+-------------+---------------+-----------------+\n");
+	for (int i = 0; i < np; i++)
+	{
+		printf("| %3s | %13d | %11d | %13d | %15d |\n", p[i].pid, p[i].arrival, p[i].burst, p[i].waiting, p[i].turnaround);
+	}
+	printf("+-----+---------------+-------------+---------------+-----------------+\n");
 }
 
 void printQlong()
-{	
-	if (fron == rear+1)
+{
+	if (fron == rear + 1)
 	{
 		printf("Current Queue :\n");
 		printf("Empty\n");
@@ -136,8 +151,8 @@ void printQlong()
 }
 
 void printQshort()
-{	
-	if (fron == rear+1)
+{
+	if (fron == rear + 1)
 	{
 		printf("Current Queue :\n");
 		printf("Empty\n");
@@ -147,7 +162,7 @@ void printQshort()
 		printf("Current Queue : \n");
 		for (int k = fron; k <= rear; ++k)
 		{
-			printf("%s | ",RQ[k].pid);
+			printf("%s | ", RQ[k].pid);
 		}
 		printf("\n");
 	}
@@ -158,12 +173,12 @@ void roundRobin()
 {
 	struct process exec;
 	int tottime = tot_burst();
-	printf("%d\n",tottime);
+	printf("%d\n", tottime);
 	int t;
 	sortarrival();
-	//printf("0 |");
-	for (int time = 0; time < tottime; time=time+q)
-	{	
+	// printf("0 |");
+	for (int time = 0; time < tottime; time = time + q)
+	{
 		int up = 0;
 		for (int counter = 0; counter < np; ++counter)
 		{
@@ -173,17 +188,17 @@ void roundRobin()
 				enqueue(p[counter]);
 			}
 		}
-		
+
 		exec = dequeue();
 		if (exec.remaining < q)
 		{
 			time += exec.remaining;
-			printf("%s | %d | ",exec.pid,time);
+			printf("%s | %d | ", exec.pid, time);
 			up = 1;
 		}
 		else
 		{
-			printf("%s | %d | ",exec.pid,time);
+			printf("%s | %d | ", exec.pid, time);
 			exec.remaining -= q;
 		}
 		if (exec.remaining > 0)
@@ -192,19 +207,42 @@ void roundRobin()
 		}
 		if (up == 1)
 		{
-			time-=q;
+			time -= q;
 		}
 	}
 }
 
+void sjf()
+{
+	sortburst();
+}
+
+/*------------------------------------------------------------------------------------------*/
 void main()
 {
 	struct process temper;
+	char opt = 'a';
 	printf("Enter number of processes : \n");
-	scanf("%d",&np);
+	scanf("%d", &np);
 	getInput(np);
-	roundRobin();
+	do
+	{
+		printf("Process Scheduling menu \n-------------------------------------\n");
+		printf("1. Round Robin(r) \n2. Shortest Job First(s) \n3. Exit(e) \nEnter option : ");
+		scanf(" %c", &opt);
+		switch (opt)
+		{
+		case 'r':
+			roundRobin();
+			break;
+		case 's':
+			sjf();
+			break;
+		case 'e':
+			break;
+		default:
+			break;
+		}
 
+	} while (opt != 'e')
 }
-
-
