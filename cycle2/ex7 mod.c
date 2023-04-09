@@ -244,5 +244,5 @@ void main()
 			break;
 		}
 
-	} while (opt != 'e')
+	} while (opt != 'e');
 }
